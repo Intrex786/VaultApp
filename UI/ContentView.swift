@@ -33,6 +33,7 @@ enum AppTab: Int, CaseIterable {
 // MARK: - Root Content View
 
 struct ContentView: View {
+    @EnvironmentObject private var vm: VaultViewModel
     @State private var selectedTab: AppTab = .home
     @State private var previousTab: AppTab = .home
     @State private var tabBarOffset: CGFloat = 0
@@ -75,6 +76,7 @@ struct ContentView: View {
         .sheet(isPresented: $showNewItemSheet) {
             AddItemView()
                 .presentationBackground(Color.obsidianBase)
+                .environmentObject(vm)
         }
         .onChange(of: selectedTab) { _, newTab in
             AppHaptics.selection()

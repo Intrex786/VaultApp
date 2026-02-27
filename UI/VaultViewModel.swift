@@ -52,6 +52,7 @@ final class VaultViewModel: ObservableObject {
         symmetricKey = key
         isOnboarded  = true
         isUnlocked   = true
+        await loadItems()
     }
 
     // MARK: - Unlock (biometric each launch)
