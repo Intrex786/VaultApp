@@ -1,0 +1,25 @@
+name: Build iOS IPA
+on: [push]
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build IPA
+        run: |
+          xcodebuild -scheme VaultApp \
+            -sdk iphoneos \
+            -configuration Release \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            -derivedDataPath build/
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          cp -r build/Build/Products/Release-iphoneos/VaultApp.app Payload/
+          zip -r VaultApp.ipa Payload/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VaultApp-IPA
+          path: VaultApp.ipa
