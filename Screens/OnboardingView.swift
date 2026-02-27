@@ -24,7 +24,7 @@ struct OnboardingView: View {
     @State private var stepOffset: CGFloat         = 0
     @State private var appeared: Bool              = false
 
-    var onComplete: (() -> Void)?
+    var onComplete: ((String) -> Void)?
 
     private let biometricGate = BiometricGate()
 
@@ -150,7 +150,7 @@ struct OnboardingView: View {
                         await MainActor.run {
                             isLoading = false
                             AppHaptics.success()
-                            onComplete?()
+                            onComplete?(masterPassword)
                         }
                     } catch {
                         await MainActor.run {
@@ -161,7 +161,7 @@ struct OnboardingView: View {
                     }
                 }
             } else {
-                onComplete?()
+                onComplete?(masterPassword)
             }
         }
     }

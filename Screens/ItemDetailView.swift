@@ -38,7 +38,8 @@ enum WatchtowerStatus {
 
 struct ItemDetailView: View {
     let item: DisplayVaultItem
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss)    private var dismiss
+    @EnvironmentObject         private var vm: VaultViewModel
 
     @State private var passwordRevealed: Bool     = false
     @State private var usernameCopied: Bool        = false
@@ -163,6 +164,7 @@ struct ItemDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     AppHaptics.selection()
+                    Task { await vm.toggleFavourite(item) }
                 } label: {
                     Image(systemName: item.isFavourite ? "star.fill" : "star")
                         .foregroundStyle(item.isFavourite ? Color.warningAmber : Color.textSecondary)
@@ -171,7 +173,7 @@ struct ItemDetailView: View {
         }
         .alert("Delete \"\(item.title)\"?", isPresented: $showDeleteAlert) {
             Button("Delete", role: .destructive) {
-                dismiss()
+                Task { await vm.deleteItem(id: item.id); dismiss() }
             }
             Button("Cancel", role: .cancel) {}
         } message: {

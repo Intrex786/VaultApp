@@ -11,9 +11,12 @@ targets:
       - Security
       - UI
       - Screens
+    resources:
+      - Assets.xcassets
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.yourname.vaultapp
         SWIFT_VERSION: 5.9
         TARGETED_DEVICE_FAMILY: 1
         INFOPLIST_FILE: Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon

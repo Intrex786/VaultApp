@@ -52,11 +52,15 @@ struct ContentView: View {
                 AllItemsView(showNewItemSheet: $showNewItemSheet)
                     .tag(AppTab.allItems)
 
-                GeneratorPlaceholderView()
-                    .tag(AppTab.generator)
+                NavigationStack {
+                    PasswordGeneratorView()
+                }
+                .tag(AppTab.generator)
 
-                SettingsPlaceholderView()
-                    .tag(AppTab.settings)
+                NavigationStack {
+                    SettingsView()
+                }
+                .tag(AppTab.settings)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(AppAnimation.spring, value: selectedTab)
@@ -69,7 +73,8 @@ struct ContentView: View {
         .ignoresSafeArea(edges: .bottom)
         .preferredColorScheme(.dark)
         .sheet(isPresented: $showNewItemSheet) {
-            NewItemPlaceholderSheet()
+            AddItemView()
+                .presentationBackground(Color.obsidianBase)
         }
         .onChange(of: selectedTab) { _, newTab in
             AppHaptics.selection()
