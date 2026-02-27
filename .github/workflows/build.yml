@@ -5,6 +5,13 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
       - name: Build IPA
         run: |
           xcodebuild -scheme VaultApp \
@@ -14,11 +21,13 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             -derivedDataPath build/
+
       - name: Package IPA
         run: |
           mkdir -p Payload
-          cp -r build/Build/Products/Release-iphoneos/VaultApp.app Payload/
+          cp -r "build/Build/Products/Release-iphoneos/VaultApp.app" Payload/
           zip -r VaultApp.ipa Payload/
+
       - uses: actions/upload-artifact@v4
         with:
           name: VaultApp-IPA
