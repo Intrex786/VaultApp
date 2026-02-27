@@ -33,7 +33,8 @@ struct AppFont {
 
 // MARK: - Vault Item Model (Placeholder)
 
-struct DisplayVaultItem: Identifiable, Equatable {
+struct DisplayVaultItem: Identifiable, Equatable, Hashable {
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
     let id: UUID
     var title: String
     var username: String
