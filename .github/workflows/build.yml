@@ -5,6 +5,16 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+   
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate App Icon
+        run: swift scripts/gen_icon.swift
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
 
       - name: Install XcodeGen
         run: brew install xcodegen
