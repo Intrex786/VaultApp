@@ -1,0 +1,74 @@
+# PASSWORD MANAGER — AGENT HANDOFF FILE
+Last updated: 2026-02-27
+
+## STATUS
+- [x] Agent 1: CryptoEngine.swift        — AES-GCM-256 + HKDF-SHA256
+- [x] Agent 1: BiometricGate.swift       — Face ID / Touch ID actor
+- [x] Agent 1: VaultStore.swift          — CoreData actor (programmatic model)
+- [x] Agent 1: KeychainManager.swift     — Keychain wrapper
+- [x] Agent 2: AppTheme.swift            — Colors, gradients, animations, haptics
+- [x] Agent 2: DesignSystem.swift        — DisplayVaultItem model, shared components, typography
+- [x] Agent 2: ContentView.swift         — Root navigation shell
+- [x] Agent 2: HomeView.swift            — Home dashboard
+- [x] Agent 2: AllItemsView.swift        — Full vault list
+- [x] Agent 3: OnboardingView.swift      — 3-step: master pw + strength ring, secret key gen, Face ID
+- [x] Agent 3: ItemDetailView.swift      — Blur→reveal fields, DNA art hero, Watchtower banner
+- [x] Agent 3: PasswordGeneratorView.swift — Slider 8–64, toggles, live DNA visualizer, spring dismiss
+- [x] Agent 3: WatchtowerView.swift      — Health ring 0–100 spring anim, risk cards, swipe-to-resolve
+- [x] Agent 3: SettingsView.swift        — Travel Mode biometric-gated, auto-lock picker, iCloud sync
+- [x] Post:    DNAVisualizer.swift        — Shared DNAArtView extracted to UI/
+
+## CURRENT ERRORS
+[paste any compile errors here before resuming]
+
+## NEXT ACTION
+Build & run in Xcode. All known symbol conflicts resolved. Next step: wire NavigationLink in
+HomeView/AllItemsView to push ItemDetailView(item:), and swap ContentView placeholder stubs
+(GeneratorPlaceholderView, SettingsPlaceholderView) with the real PasswordGeneratorView /
+SettingsView / WatchtowerView.
+
+## RESOLVED CONFLICTS (2026-02-27)
+- VaultItem collision FIXED: DesignSystem struct renamed DisplayVaultItem.
+  Changed in: DesignSystem.swift, HomeView.swift, AllItemsView.swift, ItemDetailView.swift.
+  VaultStore.swift @objc class VaultItem (CoreData) is untouched.
+- DNAArtView duplicate FIXED: single definition lives in UI/DNAVisualizer.swift.
+  Local copy removed from ItemDetailView.swift.
+  PasswordGeneratorView.swift was call-site only — no change needed.
+- SettingsRow: not a conflict — SettingsView.swift declares it `private struct`.
+
+## API CONTRACTS (shared between agents)
+VaultStore.shared.fetch(tag:includingTravelHidden:) async throws -> [[String: Any]]
+VaultStore.shared.insert(encryptedData:iv:vaultTag:travelHidden:) async throws -> NSManagedObjectID
+VaultStore.shared.update(_:encryptedData:iv:) async throws
+VaultStore.shared.delete(_:) async throws
+VaultStore.shared.deleteAll() async throws
+VaultStore.shared.setTravelHidden(_:hidden:) async throws
+CryptoEngine.encrypt(_:using:) async throws -> (ciphertext: Data, iv: Data)
+CryptoEngine.decrypt(_:iv:using:) async throws -> Data
+CryptoEngine.deriveKey(from:salt:) async throws -> SymmetricKey
+CryptoEngine.generateSalt() -> Data
+CryptoEngine.generateRandomBytes(count:) -> Data
+BiometricGate().authenticate(reason:) async throws
+BiometricGate().authenticateWithFallback(reason:) async throws
+BiometricGate().isAvailable() -> Bool
+BiometricGate().biometryType() -> LABiometryType
+
+## FILE MAP (current state)
+Security/
+  CryptoEngine.swift          — AES-GCM-256 + HKDF
+  BiometricGate.swift         — LAContext actor
+  VaultStore.swift            — CoreData actor; @objc class VaultItem: NSManagedObject
+  KeychainManager.swift       — Keychain wrapper
+UI/
+  AppTheme.swift              — Colors, gradients, animations, haptics, shadows
+  DesignSystem.swift          — struct DisplayVaultItem, SampleVault, shared components
+  ContentView.swift           — TabView shell (stubs: GeneratorPlaceholderView, SettingsPlaceholderView)
+  HomeView.swift              — Dashboard (DisplayVaultItem)
+  AllItemsView.swift          — Full list + search/filter (DisplayVaultItem)
+  DNAVisualizer.swift         — struct DNAArtView — shared, single definition
+Screens/
+  OnboardingView.swift        — 3-step onboarding
+  ItemDetailView.swift        — Detail + blur-reveal + Watchtower banner (DisplayVaultItem)
+  PasswordGeneratorView.swift — Generator + live DNA visualizer
+  WatchtowerView.swift        — Health ring + swipe-to-resolve
+  SettingsView.swift          — Travel Mode + Auto-Lock + iCloud sync
