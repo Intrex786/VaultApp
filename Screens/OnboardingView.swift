@@ -398,7 +398,7 @@ private struct SecretKeyStep: View {
                         Text(secretKey)
                             .font(AppFont.passwordSmall)
                             .foregroundStyle(Color.textPrimary)
-                            .lineBreakMode(.byCharWrapping)
+                            .fixedSize(horizontal: false, vertical: true)
                             .frame(maxWidth: .infinity, alignment: .leading)
 
                         Divider()

@@ -92,7 +92,7 @@ struct SettingsView: View {
                                 AppHaptics.selection()
                                 withAnimation(AppAnimation.spring) { showAutoLockPicker.toggle() }
                             } label: {
-                                SettingsRow(
+                                SettingsDetailRow(
                                     icon: "lock.rotation",
                                     iconColor: .accentIndigo,
                                     label: "Auto-Lock",
@@ -125,7 +125,7 @@ struct SettingsView: View {
                             Divider().background(Color.obsidianBorder).padding(.horizontal, AppSpacing.md)
 
                             // Face ID
-                            SettingsRow(
+                            SettingsDetailRow(
                                 icon: "faceid",
                                 iconColor: .successGreen,
                                 label: "Face ID",
@@ -152,7 +152,7 @@ struct SettingsView: View {
                             Divider().background(Color.obsidianBorder).padding(.horizontal, AppSpacing.md)
 
                             Button {} label: {
-                                SettingsRow(
+                                SettingsDetailRow(
                                     icon: "square.and.arrow.down",
                                     iconColor: Color(hex: "#30D158"),
                                     label: "Export Vault",
@@ -167,14 +167,14 @@ struct SettingsView: View {
                     // ── Appearance ────────────────────────────────────────────
                     SettingsSection(title: "Appearance") {
                         VStack(spacing: 0) {
-                            SettingsRow(
+                            SettingsDetailRow(
                                 icon: "moon.fill",
                                 iconColor: Color(hex: "#BF5AF2"),
                                 label: "Theme",
                                 value: "Obsidian Dark"
                             )
                             Divider().background(Color.obsidianBorder).padding(.horizontal, AppSpacing.md)
-                            SettingsRow(
+                            SettingsDetailRow(
                                 icon: "textformat.size",
                                 iconColor: Color(hex: "#FF9F0A"),
                                 label: "App Icon",
@@ -187,21 +187,21 @@ struct SettingsView: View {
                     // ── About ─────────────────────────────────────────────────
                     SettingsSection(title: "About") {
                         VStack(spacing: 0) {
-                            SettingsRow(
+                            SettingsDetailRow(
                                 icon: "info.circle",
                                 iconColor: Color.textSecondary,
                                 label: "Version",
                                 value: "1.0.0 (1)"
                             )
                             Divider().background(Color.obsidianBorder).padding(.horizontal, AppSpacing.md)
-                            SettingsRow(
+                            SettingsDetailRow(
                                 icon: "doc.text",
                                 iconColor: Color.textSecondary,
                                 label: "Privacy Policy",
                                 value: ""
                             )
                             Divider().background(Color.obsidianBorder).padding(.horizontal, AppSpacing.md)
-                            SettingsRow(
+                            SettingsDetailRow(
                                 icon: "checkmark.seal",
                                 iconColor: Color.textSecondary,
                                 label: "Security Audit",
@@ -332,7 +332,7 @@ private struct SettingsSection<Content: View>: View {
 
 // MARK: - Settings Row
 
-private struct SettingsRow: View {
+private struct SettingsDetailRow: View {
     let icon:      String
     let iconColor: Color
     let label:     String
