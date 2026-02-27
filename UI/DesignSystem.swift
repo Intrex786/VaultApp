@@ -93,7 +93,7 @@ enum ItemCategory: String, CaseIterable, Identifiable {
 
 struct SampleVault {
     static let items: [DisplayVaultItem] = [
-        DisplayDisplayVaultItem(id: UUID(), title: "GitHub",
+        DisplayVaultItem(id: UUID(), title: "GitHub",
                   username: "dev@example.com", password: "Gh•••••••••",
                   category: .login, isPinned: true,
                   iconName: "chevron.left.forwardslash.chevron.right",
